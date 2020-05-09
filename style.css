@@ -1,4 +1,21 @@
 #vds {
+    padding: 50px;
+    
+}
+
+.link-main {
     text-align: center;
+}
+
+.button-main {
     padding: 20px;
+    text-align: center;
+   
+}
+
+.title {
+    font-family: monaco;
+    font-weight: bolder;
+    color: greenyellow;
+    text-align: center;
 }
