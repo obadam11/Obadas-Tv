@@ -1,7 +1,10 @@
 #vds {
-    padding: 50px;
-    
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
+
+
 
 .link-main {
     text-align: center;
