@@ -4,9 +4,6 @@ let link;
 const src = (url = link) => `https://www.youtube.com/embed/${url}`;
 const frameborder = 0;
 const allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture";
-let numOfVedios = 0;
-let totalVdsAdded = 0;
-
 
 
 console.clear();
@@ -16,9 +13,6 @@ function readLocalStorage() {
     let vds = document.getElementById("vds");
     vds.style.alignContent = "center";
 
-    
-    
-    
 
     for (let i = 0; i < localStorage.length; i++) {
         let f = document.createElement("iframe");
@@ -49,33 +43,37 @@ const submit = document.getElementById("MainBtn").onclick = () => {
     link = document.getElementById("link").value;
 
     if (link != "") {
-    numOfVedios ++;
-    totalVdsAdded ++;
     let vds = document.getElementById("vds");
-    // Recently added (let)
+    // This is for numbering
+    let allVds = document.querySelectorAll(".vds iframe");
     let frame = document.createElement("iframe");
 
     let h2 = document.createElement("h2");
-    let h2txt = document.createTextNode(toTwoDigits(numOfVedios));
+    let h2txt = document.createTextNode(toTwoDigits(allVds.length + 1));
     h2.appendChild(h2txt);
     console.log(h2txt);
 
     frame.setAttribute("width", width);
     frame.setAttribute("height", height);
     if (link.startsWith("https://www.youtube.com/embed/")) {
-        frame.setAttribute("src", link)
-        localStorage.setItem(String(totalVdsAdded), String(link));
+        frame.setAttribute("src", link);
+        localStorage.setItem(String(link), String(link));
     }
 
     else if (link.startsWith("https://youtu.be/")) {
         let linkSub = link.slice(16);
         frame.setAttribute("src", src(linkSub));
-        localStorage.setItem(String(totalVdsAdded), String(src(linkSub)));
+
+        localStorage.setItem(String(src(linkSub)), String(src(linkSub)));
+
+        
     }
     
     else {
         frame.setAttribute("src", src());
-        localStorage.setItem(String(totalVdsAdded), String(src()));
+
+        localStorage.setItem(String(src()), String(src()));
+
     }
     
     
@@ -95,7 +93,6 @@ const submit = document.getElementById("MainBtn").onclick = () => {
 
     link = "";
     document.getElementById("link").value = "";
-    console.log(numOfVedios);
 
     
 
@@ -104,15 +101,20 @@ const submit = document.getElementById("MainBtn").onclick = () => {
 
 
 document.getElementById("delete").onclick = () => {
-    numOfVedios --;
    link = document.getElementById('link').value;
    let allVds = document.querySelectorAll(".vds iframe"); 
    let allH2Tags = document.querySelectorAll(".vds h2");
    allVds[link - 1].remove();
    allH2Tags[link - 1].remove();
+
+    // Manipulating Loacal Storage
+   localStorage.removeItem(allVds[link - 1].getAttribute("src"));
    
-   // Manipulating Loacal Storage
-   localStorage.removeItem(String(link - 1));
+
+
+   location.reload();
+   
+   
 }
 
 document.getElementById("delete-all").onclick = () => {
@@ -131,6 +133,7 @@ document.getElementById("delete-all").onclick = () => {
     }
     // Manipulating Local Storage
     localStorage.clear();
+    
    }
 }
 
